@@ -200,6 +200,7 @@
 <body>
   <div class="container">
     <!-- Personal Info -->
+    <form id="registrationForm">
     <div class="section">
       <div class="section-title">
         <svg fill="#fff" viewBox="0 0 24 24"><path d="M12 12c2.761 0 5-2.239 5-5s-2.239-5-5-5-5 2.239-5 5 2.239 5 5 5zm0 2c-3.33 0-10 1.667-10 5v3h20v-3c0-3.333-6.67-5-10-5z"/></svg>
@@ -291,7 +292,7 @@
         <button type="submit" class="btn btn-submit">&#10004; Submit Registration</button>
       </div>
     </div>
-
+    </form>
     <!-- Footer -->
     <div class="footer">
       <div>Follow us on:</div>
@@ -318,5 +319,75 @@
       <div class="design-credit">Designed by <b> RN4OUR CRICKET</b></div>
     </div>
   </div>
+  <script>
+const webAppUrl = "https://script.google.com/macros/s/AKfycbw6swVcNDHFq-psXAwhuZzi1YcDROnZ5YWPwRCkseI85hGLc_7_aTjWw8gXXgWuiO6oBw/exec"; // Apna Web App URL
+
+document.getElementById('registrationForm').addEventListener('submit', async function(e) {
+  e.preventDefault();
+
+  // Helper: file ko base64 string me convert karo
+  async function toBase64(file) {
+    if (!file) return '';
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = error => reject(error);
+      reader.readAsDataURL(file);
+    });
+  }
+
+  // Sare field values le lo
+  const fname = document.getElementById('fname').value;
+  const lname = document.getElementById('lname').value;
+  const cricheroz = document.getElementById('cricheroz').value;
+  const village = document.getElementById('village').value;
+  const taluka = document.getElementById('taluka').value;
+  const role = document.getElementById('role').value;
+  const size = document.getElementById('size').value;
+  const tshirtname = document.getElementById('tshirtname').value;
+  const tshirtno = document.getElementById('tshirtno').value;
+
+  // Files ko base64 me convert karo
+  const profileFile = document.getElementById('profile').files[0];
+  const aadhaarFile = document.getElementById('aadhaar').files[0];
+  const paymentFile = document.getElementById('paymentss').files[0];
+
+  const profileBase64 = await toBase64(profileFile);
+  const aadhaarBase64 = await toBase64(aadhaarFile);
+  const paymentBase64 = await toBase64(paymentFile);
+
+  // Data object banao
+  const payload = new URLSearchParams();
+  payload.append('fname', fname);
+  payload.append('lname', lname);
+  payload.append('cricheroz', cricheroz);
+  payload.append('village', village);
+  payload.append('taluka', taluka);
+  payload.append('role', role);
+  payload.append('size', size);
+  payload.append('tshirtname', tshirtname);
+  payload.append('tshirtno', tshirtno);
+  payload.append('profile', profileBase64);
+  payload.append('aadhaar', aadhaarBase64);
+  payload.append('paymentss', paymentBase64);
+
+  // Data POST karo Apps Script Web App par
+  fetch(webAppUrl, {
+    method: 'POST',
+    body: payload,
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded'
+    }
+  })
+  .then(res => res.text())
+  .then(msg => {
+    alert(msg); // success ya error message dikha dega
+    document.getElementById('registrationForm').reset();
+  })
+  .catch(err => {
+    alert('Error: ' + err);
+  });
+});
+</script>
 </body>
 </html>
