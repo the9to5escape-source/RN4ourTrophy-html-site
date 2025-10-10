@@ -4,6 +4,8 @@
   <meta charset="UTF-8">
   <title>RN4our Trophy 2025 Registration</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- SweetAlert2 CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <style>
     body {
       background: linear-gradient(120deg, #1e3c72 0%, #2a5298 100%);
@@ -322,10 +324,30 @@
   <script>
 const webAppUrl = "https://script.google.com/macros/s/AKfycbw6swVcNDHFq-psXAwhuZzi1YcDROnZ5YWPwRCkseI85hGLc_7_aTjWw8gXXgWuiO6oBw/exec"; // Apna Web App URL
 
+// Generate unique ID function
+function generateUniqueID() {
+  return 'RN2025' + Date.now().toString().slice(-6) + Math.floor(100 + Math.random() * 900);
+}
+
 document.getElementById('registrationForm').addEventListener('submit', async function(e) {
   e.preventDefault();
 
-  // Helper: file ko base64 string me convert karo
+  // Button disable (prevent multiple clicks)
+  const submitBtn = document.querySelector('.btn-submit');
+  submitBtn.disabled = true;
+  submitBtn.style.opacity = "0.6";
+
+  // Show SweetAlert2 loading popup
+  Swal.fire({
+    title: 'Processing...',
+    html: 'Your registration is being processed.<br><br><img src="https://i.gifer.com/ZZ5H.gif" width="42" height="42" style="margin-top:12px;">',
+    allowOutsideClick: false,
+    allowEscapeKey: false,
+    showConfirmButton: false,
+    background: 'linear-gradient(120deg, #f6f8fa 0%, #eaf1fb 100%)',
+    color: '#23406b'
+  });
+
   async function toBase64(file) {
     if (!file) return '';
     return new Promise((resolve, reject) => {
@@ -356,8 +378,12 @@ document.getElementById('registrationForm').addEventListener('submit', async fun
   const aadhaarBase64 = await toBase64(aadhaarFile);
   const paymentBase64 = await toBase64(paymentFile);
 
+  // Unique ID banao
+  const uniqueID = generateUniqueID();
+
   // Data object banao
   const payload = new URLSearchParams();
+  payload.append('uniqueID', uniqueID);
   payload.append('fname', fname);
   payload.append('lname', lname);
   payload.append('cricheroz', cricheroz);
@@ -371,7 +397,6 @@ document.getElementById('registrationForm').addEventListener('submit', async fun
   payload.append('aadhaar', aadhaarBase64);
   payload.append('paymentss', paymentBase64);
 
-  // Data POST karo Apps Script Web App par
   fetch(webAppUrl, {
     method: 'POST',
     body: payload,
@@ -381,11 +406,34 @@ document.getElementById('registrationForm').addEventListener('submit', async fun
   })
   .then(res => res.text())
   .then(msg => {
-    alert(msg); // success ya error message dikha dega
+    // Close loading & show success
+    Swal.close();
+    Swal.fire({
+      title: 'Registration Received!',
+      html: 'Thank you for registering for RN4our Trophy 2025.<br><br><b>Your Registration ID:</b> <span style="color:#0d6efd; font-size:1.3em;">' + uniqueID + '</span><br><br>Please save this ID for future reference.',
+      icon: 'success',
+      confirmButtonColor: '#1e3c72',
+      background: 'linear-gradient(120deg, #f6f8fa 0%, #eaf1fb 100%)',
+      color: '#23406b',
+      iconColor: '#0d6efd'
+    });
     document.getElementById('registrationForm').reset();
+    submitBtn.disabled = false;
+    submitBtn.style.opacity = "1";
   })
   .catch(err => {
-    alert('Error: ' + err);
+    Swal.close();
+    Swal.fire({
+      title: 'Error!',
+      text: 'Something went wrong. Please try again.\n' + err,
+      icon: 'error',
+      confirmButtonColor: '#e63946',
+      background: 'linear-gradient(120deg, #f6f8fa 0%, #eaf1fb 100%)',
+      color: '#23406b',
+      iconColor: '#e63946'
+    });
+    submitBtn.disabled = false;
+    submitBtn.style.opacity = "1";
   });
 });
 </script>
