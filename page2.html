@@ -6,6 +6,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <!-- SweetAlert2 CDN -->
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <!-- Font Awesome CDN for official icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
   <style>
     body {
       background: linear-gradient(120deg, #1e3c72 0%, #2a5298 100%);
@@ -51,26 +53,59 @@
       color: #23406b;
       letter-spacing: 0.1px;
     }
-    input[type="text"], input[type="file"], select {
-      width: 100%;
-      padding: 11px;
-      border: 1px solid #bfcbe1;
-      border-radius: 12px;
-      margin-bottom: 13px;
-      font-size: 1.02em;
+
+    /* Icon Input Group for left icon */
+    .icon-input-group {
+      display: flex;
+      align-items: center;
       background: #eaf1fb;
-      font-family: inherit;
-      color: #1e2a4c;
+      border-radius: 12px;
+      border: 1px solid #bfcbe1;
+      margin-bottom: 22px; 
+      padding-left: 4px;
       transition: border .2s;
     }
-    input[type="text"]:focus, select:focus {
+    .icon-input-group:focus-within {
       border: 1.5px solid #3f51b5;
-      outline: none;
       background: #f8fbff;
     }
-    input[type="file"] {
+    /* Icon background and spacing */
+    .icon-input-group .icon-bg {
+      background: #eeeeee;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 34px;
+      width: 34px;
+      margin-right: 9px;
+      min-width: 34px;
+     
+    }
+    .icon-input-group i {
+      color: #3f51b5;
+      font-size: 1em; /* icon size thoda kam */
+      vertical-align: middle;
+      margin: 0;
+    }
+    .icon-input-group input[type="text"], 
+    .icon-input-group input[type="file"], 
+    .icon-input-group select {
+      border: none;
+      background: transparent;
+      font-size: 0.94em;
+      font-family: inherit;
+      color: #1e2a4c;
+      padding: 10px 0;
+      width: 100%;
+      outline: none;
+      border-radius: 12px;
+      box-shadow: none;
+      margin-bottom: 0;
+    }
+    .icon-input-group input[type="file"] {
       background: #fff;
-      border: 1px solid #bfcbe1;
+      color: #1e2a4c;
     }
     .required {
       color: #e63946;
@@ -197,6 +232,14 @@
       font-size: 0.98em;
       margin-bottom: 6px;
     }
+    /* Error message style for file size */
+    .file-error {
+      color: #e63946;
+      font-size: 0.93em;
+      margin-top: -8px;
+      margin-bottom: 8px;
+      display: none;
+    }
   </style>
 </head>
 <body>
@@ -205,76 +248,106 @@
     <form id="registrationForm">
     <div class="section">
       <div class="section-title">
-        <svg fill="#fff" viewBox="0 0 24 24"><path d="M12 12c2.761 0 5-2.239 5-5s-2.239-5-5-5-5 2.239-5 5 2.239 5 5 5zm0 2c-3.33 0-10 1.667-10 5v3h20v-3c0-3.333-6.67-5-10-5z"/></svg>
+        <i class="fa-solid fa-user" style="color:#fff"></i>
         Personal Information
       </div>
       <label for="fname">First Name <span class="required">*</span></label>
-      <input type="text" id="fname" name="fname" placeholder="Enter First Name" required>
+      <div class="icon-input-group">
+        <span class="icon-bg"><i class="fa-solid fa-user"></i></span>
+        <input type="text" id="fname" name="fname" placeholder="Enter First Name" required>
+      </div>
 
       <label for="lname">Last Name <span class="required">*</span></label>
-      <input type="text" id="lname" name="lname" placeholder="Enter Last Name" required>
+      <div class="icon-input-group">
+        <span class="icon-bg"><i class="fa-solid fa-user"></i></span>
+        <input type="text" id="lname" name="lname" placeholder="Enter Last Name" required>
+      </div>
 
       <label for="cricheroz"> Contact Number (Cricheroes) <span class="required">*</span></label>
-      <input type="text" id="cricheroz" name="cricheroz" placeholder="Enter Cricheroes Number" required>
+      <div class="icon-input-group">
+        <span class="icon-bg"><i class="fa-brands fa-whatsapp"></i></span>
+        <input type="text" id="cricheroz" name="cricheroz" placeholder="Enter Cricheroes Number" required>
+      </div>
 
       <label for="village">Village <span class="required">*</span></label>
-      <input type="text" id="village" name="village" placeholder="Enter your Village" required>
+      <div class="icon-input-group">
+        <span class="icon-bg"><i class="fa-solid fa-house"></i></span>
+        <input type="text" id="village" name="village" placeholder="Enter your Village" required>
+      </div>
 
       <label for="taluka">City <span class="required">*</span></label>
-      <input type="text" id="taluka" name="taluka" placeholder="Enter your City" required>
+      <div class="icon-input-group">
+        <span class="icon-bg"><i class="fa-solid fa-city"></i></span>
+        <input type="text" id="taluka" name="taluka" placeholder="Enter your City" required>
+      </div>
 
       <label for="profile">Profile Photo <span class="required">*</span></label>
-      <input type="file" id="profile" name="profile" required>
+      <div class="icon-input-group">
+        <span class="icon-bg"><i class="fa-solid fa-camera"></i></span>
+        <input type="file" id="profile" name="profile" required>
+      </div>
+      <small id="profile-error" class="file-error">File size must not exceed 1 MB.</small>
       <div class="info">Upload a clear face photo For Auction</div>
 
       <label for="aadhaar">Aadhar Card <span class="required">*</span></label>
-      <input type="file" id="aadhaar" name="aadhaar" required>
+      <div class="icon-input-group">
+        <span class="icon-bg"><i class="fa-solid fa-id-card"></i></span>
+        <input type="file" id="aadhaar" name="aadhaar" required>
+      </div>
+      <small id="aadhaar-error" class="file-error">File size must not exceed 1 MB.</small>
       <div class="info">Upload a clear image of your Aadhar card</div>
     </div>
 
     <!-- Player Role -->
     <div class="section">
       <div class="section-title">
-        <svg fill="#fff" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5S10.62 6.5 12 6.5 14.5 7.62 14.5 9 13.38 11.5 12 11.5z"/></svg>
+        <i class="fa-solid fa-user-tag" style="color:#fff"></i>
         Player Role
       </div>
       <label for="role">Role <span class="required">*</span></label>
-      <select id="role" name="role" required>
-        <option value="">Select Role</option>
-        <option value="Batsman">Batsman</option>
-        <option value="Bowler">Bowler</option>
-        <option value="Allrounder">Allrounder</option>
-        <option value="Wicketkeeper">Wicket Keeper</option>
-      </select>
+      <div class="icon-input-group">
+        <span class="icon-bg"><i class="fa-solid fa-user-astronaut"></i></span>
+        <select id="role" name="role" required>
+          <option value="">Select Role</option>
+          <option value="Batsman">Batsman</option>
+          <option value="Bowler">Bowler</option>
+          <option value="Allrounder">Allrounder</option>
+          <option value="Wicketkeeper">Wicket Keeper</option>
+        </select>
+      </div>
     </div>
 
     <!-- Clothing Info -->
     <div class="section">
       <div class="section-title">
-        <svg fill="#fff" viewBox="0 0 24 24"><path d="M20 7l-6-5-6 5v10c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7zm-8 7.5c0 .83.67 1.5 1.5 1.5S15 15.33 15 14.5 14.33 13 13.5 13s-1.5.67-1.5 1.5z"/></svg>
+        <i class="fa-solid fa-shirt" style="color:#fff"></i>
         Clothing Information
       </div>
       <label for="size">T-shirt Size <span class="required">*</span></label>
-      <select id="size" name="size" required>
-        <option value="">Select Size</option>
-        <option value="S">Small</option>
-        <option value="M">Medium</option>
-        <option value="L">Large</option>
-        <option value="XL">XL</option>
-         <option value="XXL">XXL</option>
-         <option value="XXXL">XXXL</option>
+      <div class="icon-input-group">
+        <span class="icon-bg"><i class="fa-solid fa-shirt"></i></span>
+        <select id="size" name="size" required>
+          <option value="">Select Size</option>
+          <option value="S">Small</option>
+          <option value="M">Medium</option>
+          <option value="L">Large</option>
+          <option value="XL">XL</option>
+          <option value="XXL">XXL</option>
+          <option value="XXXL">XXXL</option>
+        </select>
+      </div>
 
-        
-      </select>
-
-       <label for="tshirtno">T-shirt Number <span class="required">*</span></label>
-      <input type="text" id="tshirtno" name="tshirtno" placeholder="Enter T-Shirt Number" required>
+      <label for="tshirtno">T-shirt Number <span class="required">*</span></label>
+      <div class="icon-input-group">
+        <span class="icon-bg"><i class="fa-solid fa-hashtag"></i></span>
+        <input type="text" id="tshirtno" name="tshirtno" placeholder="Enter T-Shirt Number" required>
+      </div>
     </div>
 
     <!-- QR Payment -->
     <div class="section">
       <div class="section-title">
-        <svg fill="#fff" viewBox="0 0 24 24"><path d="M3 3h2v2H3V3zm4 0h2v2H7V3zm4 0h2v2h-2V3zm4 0h2v2h-2V3zm4 0h2v2h-2V3zM3 7h2v2H3V7zm4 0h2v2H7V7zm4 0h2v2h-2V7zm4 0h2v2h-2V7zm4 0h2v2h-2V7zM3 11h2v2H3v-2zm4 0h2v2H7v-2zm4 0h2v2h-2v-2zm4 0h2v2h-2v-2zm4 0h2v2h-2v-2zM3 15h2v2H3v-2zm4 0h2v2H7v-2zm4 0h2v2h-2v-2zm4 0h2v2h-2v-2zm4 0h2v2h-2v-2z"/></svg>
+        <i class="fa-solid fa-qrcode" style="color:#fff"></i>
         QR to Make Payment
       </div>
       <div class="info bold">Please scan the QR code to make a payment of <span class="bold">Rs 500.00</span>.</div>
@@ -286,7 +359,11 @@
         <div class="qr-note">Scan to pay with any UPI app</div>
       </div>
       <label for="paymentss">Please Upload Payment Screenshot Below <span class="required">*</span></label>
-      <input type="file" id="paymentss" name="paymentss" required>
+      <div class="icon-input-group">
+        <span class="icon-bg"><i class="fa-solid fa-receipt"></i></span>
+        <input type="file" id="paymentss" name="paymentss" required>
+      </div>
+      <small id="paymentss-error" class="file-error">File size exceeds 1 MB.</small>
       <div class="info">
         <i> Please upload the payment screenshot. Ensure the receipt clearly shows the <span class="bold">500.00 amount paid</span>, <span class="bold">date of payment</span>, and <span class="bold">transaction ID</span> for verification.</i>
       </div>
@@ -301,23 +378,23 @@
       <div>Follow us on:</div>
       <div class="social-icons">
        <a href="https://www.instagram.com/p/DPaU1JSCLfY/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==" target="_blank">
-  <img 
-    src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" 
-    alt="Instagram" 
-    width="25" 
-    height="25" 
-    style="border-radius:6px; cursor:pointer;"
-  />
-</a>
-      <a href="https://wa.me/" target="_blank">
-  <img 
-    src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" 
-    alt="WhatsApp" 
-    width="25" 
-    height="25" 
-    style="cursor:pointer;"
-  />
-</a>
+         <img 
+          src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" 
+          alt="Instagram" 
+          width="25" 
+          height="25" 
+          style="border-radius:6px; cursor:pointer;"
+         />
+       </a>
+       <a href="https://wa.me/" target="_blank">
+         <img 
+          src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" 
+          alt="WhatsApp" 
+          width="25" 
+          height="25" 
+          style="cursor:pointer;"
+         />
+       </a>
       </div>
       <div class="design-credit">Designed by <b> RN4OUR CRICKET</b></div>
     </div>
@@ -329,6 +406,25 @@ const webAppUrl = "https://script.google.com/macros/s/AKfycbw6swVcNDHFq-psXAwhuZ
 function generateUniqueID() {
   return 'RN2025' + Date.now().toString().slice(-6) + Math.floor(100 + Math.random() * 900);
 }
+
+// File size validation with error below input and clear file if invalid
+function checkFileInputSize(inputId, errorId) {
+  const input = document.getElementById(inputId);
+  const error = document.getElementById(errorId);
+  const MAX_FILE_SIZE = 1024 * 1024; // 1 MB
+
+  input.addEventListener('change', function() {
+    if (input.files[0] && input.files[0].size > MAX_FILE_SIZE) {
+      error.style.display = 'inline';
+      input.value = '';
+    } else {
+      error.style.display = 'none';
+    }
+  });
+}
+checkFileInputSize('profile', 'profile-error');
+checkFileInputSize('aadhaar', 'aadhaar-error');
+checkFileInputSize('paymentss', 'paymentss-error');
 
 document.getElementById('registrationForm').addEventListener('submit', async function(e) {
   e.preventDefault();
@@ -367,13 +463,37 @@ document.getElementById('registrationForm').addEventListener('submit', async fun
   const taluka = document.getElementById('taluka').value;
   const role = document.getElementById('role').value;
   const size = document.getElementById('size').value;
-  const tshirtname = document.getElementById('tshirtname').value;
+  const tshirtname = document.getElementById('tshirtname') ? document.getElementById('tshirtname').value : '';
   const tshirtno = document.getElementById('tshirtno').value;
 
   // Files ko base64 me convert karo
   const profileFile = document.getElementById('profile').files[0];
   const aadhaarFile = document.getElementById('aadhaar').files[0];
   const paymentFile = document.getElementById('paymentss').files[0];
+
+  // 1 MB size validation on submit (for double safety)
+  const MAX_FILE_SIZE = 1024 * 1024; // 1 MB
+  if (profileFile && profileFile.size > MAX_FILE_SIZE) {
+    Swal.close();
+    document.getElementById('profile-error').style.display = 'inline';
+    submitBtn.disabled = false;
+    submitBtn.style.opacity = "1";
+    return;
+  }
+  if (aadhaarFile && aadhaarFile.size > MAX_FILE_SIZE) {
+    Swal.close();
+    document.getElementById('aadhaar-error').style.display = 'inline';
+    submitBtn.disabled = false;
+    submitBtn.style.opacity = "1";
+    return;
+  }
+  if (paymentFile && paymentFile.size > MAX_FILE_SIZE) {
+    Swal.close();
+    document.getElementById('paymentss-error').style.display = 'inline';
+    submitBtn.disabled = false;
+    submitBtn.style.opacity = "1";
+    return;
+  }
 
   const profileBase64 = await toBase64(profileFile);
   const aadhaarBase64 = await toBase64(aadhaarFile);
@@ -421,6 +541,10 @@ document.getElementById('registrationForm').addEventListener('submit', async fun
     document.getElementById('registrationForm').reset();
     submitBtn.disabled = false;
     submitBtn.style.opacity = "1";
+    // Hide error messages after reset
+    document.getElementById('profile-error').style.display = 'none';
+    document.getElementById('aadhaar-error').style.display = 'none';
+    document.getElementById('paymentss-error').style.display = 'none';
   })
   .catch(err => {
     Swal.close();
