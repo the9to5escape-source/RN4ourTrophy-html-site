@@ -69,12 +69,15 @@
       border: 1.5px solid #3f51b5;
       background: #f8fbff;
     }
- 
+    /* Icon style (no extra background now) */
     .icon-input-group i {
       color: #3f51b5;
       font-size: 1em; /* icon size thoda kam */
       vertical-align: middle;
-      margin: 0;
+      margin-right: 9px;
+      min-width: 22px;
+      text-align: center;
+      display: inline-block;
     }
     .icon-input-group input[type="text"], 
     .icon-input-group input[type="file"], 
@@ -241,37 +244,37 @@
       </div>
       <label for="fname">First Name <span class="required">*</span></label>
       <div class="icon-input-group">
-        <span class="icon-bg"><i class="fa-solid fa-user"></i></span>
+        <i class="fa-solid fa-user"></i>
         <input type="text" id="fname" name="fname" placeholder="Enter First Name" required>
       </div>
 
       <label for="lname">Last Name <span class="required">*</span></label>
       <div class="icon-input-group">
-        <span class="icon-bg"><i class="fa-solid fa-user"></i></span>
+        <i class="fa-solid fa-user"></i>
         <input type="text" id="lname" name="lname" placeholder="Enter Last Name" required>
       </div>
 
       <label for="cricheroz"> Contact Number (Cricheroes) <span class="required">*</span></label>
       <div class="icon-input-group">
-        <span class="icon-bg"><i class="fa-brands fa-whatsapp"></i></span>
+        <i class="fa-brands fa-whatsapp"></i>
         <input type="text" id="cricheroz" name="cricheroz" placeholder="Enter Cricheroes Number" required>
       </div>
 
       <label for="village">Village <span class="required">*</span></label>
       <div class="icon-input-group">
-        <span class="icon-bg"><i class="fa-solid fa-house"></i></span>
+        <i class="fa-solid fa-house"></i>
         <input type="text" id="village" name="village" placeholder="Enter your Village" required>
       </div>
 
       <label for="taluka">City <span class="required">*</span></label>
       <div class="icon-input-group">
-        <span class="icon-bg"><i class="fa-solid fa-city"></i></span>
+        <i class="fa-solid fa-city"></i>
         <input type="text" id="taluka" name="taluka" placeholder="Enter your City" required>
       </div>
 
       <label for="profile">Profile Photo <span class="required">*</span></label>
       <div class="icon-input-group">
-        <span class="icon-bg"><i class="fa-solid fa-camera"></i></span>
+        <i class="fa-solid fa-camera"></i>
         <input type="file" id="profile" name="profile" required>
       </div>
       <small id="profile-error" class="file-error">File size must not exceed 1 MB.</small>
@@ -279,7 +282,7 @@
 
       <label for="aadhaar">Aadhar Card <span class="required">*</span></label>
       <div class="icon-input-group">
-        <span class="icon-bg"><i class="fa-solid fa-id-card"></i></span>
+        <i class="fa-solid fa-id-card"></i>
         <input type="file" id="aadhaar" name="aadhaar" required>
       </div>
       <small id="aadhaar-error" class="file-error">File size must not exceed 1 MB.</small>
@@ -294,7 +297,7 @@
       </div>
       <label for="role">Role <span class="required">*</span></label>
       <div class="icon-input-group">
-        <span class="icon-bg"><i class="fa-solid fa-user-astronaut"></i></span>
+        <i class="fa-solid fa-user-astronaut"></i>
         <select id="role" name="role" required>
           <option value="">Select Role</option>
           <option value="Batsman">Batsman</option>
@@ -313,7 +316,7 @@
       </div>
       <label for="size">T-shirt Size <span class="required">*</span></label>
       <div class="icon-input-group">
-        <span class="icon-bg"><i class="fa-solid fa-shirt"></i></span>
+        <i class="fa-solid fa-shirt"></i>
         <select id="size" name="size" required>
           <option value="">Select Size</option>
           <option value="S">Small</option>
@@ -327,7 +330,7 @@
 
       <label for="tshirtno">T-shirt Number <span class="required">*</span></label>
       <div class="icon-input-group">
-        <span class="icon-bg"><i class="fa-solid fa-hashtag"></i></span>
+        <i class="fa-solid fa-hashtag"></i>
         <input type="text" id="tshirtno" name="tshirtno" placeholder="Enter T-Shirt Number" required>
       </div>
     </div>
@@ -348,10 +351,10 @@
       </div>
       <label for="paymentss">Please Upload Payment Screenshot Below <span class="required">*</span></label>
       <div class="icon-input-group">
-        <span class="icon-bg"><i class="fa-solid fa-receipt"></i></span>
+        <i class="fa-solid fa-receipt"></i>
         <input type="file" id="paymentss" name="paymentss" required>
       </div>
-      <small id="paymentss-error" class="file-error">File size exceeds 1 MB.</small>
+      <small id="paymentss-error" class="file-error">File size must not exceed 1 MB.</small>
       <div class="info">
         <i> Please upload the payment screenshot. Ensure the receipt clearly shows the <span class="bold">500.00 amount paid</span>, <span class="bold">date of payment</span>, and <span class="bold">transaction ID</span> for verification.</i>
       </div>
