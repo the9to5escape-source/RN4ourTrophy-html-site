@@ -231,6 +231,14 @@
       margin-bottom: 8px;
       display: none;
     }
+    /* Error for cricheroz field */
+    .field-error {
+      color: #e63946;
+      font-size: 0.93em;
+      margin-top: -8px;
+      margin-bottom: 8px;
+      display: none;
+    }
   </style>
 </head>
 <body>
@@ -259,6 +267,8 @@
         <i class="fa-brands fa-whatsapp"></i>
         <input type="text" id="cricheroz" name="cricheroz" placeholder="Enter Cricheroes Number" required>
       </div>
+      <small id="cricheroz-error" class="field-error">Minimum 10 digits required.</small>
+      <small id="cricheroz-duplicate" class="field-error">Number already registered, please use another number.</small>
 
       <label for="village">Village <span class="required">*</span></label>
       <div class="icon-input-group">
@@ -393,8 +403,8 @@
   </div>
   <script>
 const webAppUrl = "https://script.google.com/macros/s/AKfycbw6swVcNDHFq-psXAwhuZzi1YcDROnZ5YWPwRCkseI85hGLc_7_aTjWw8gXXgWuiO6oBw/exec"; // Apna Web App URL
+const checkNumberApi = "https://script.google.com/macros/s/AKfycbw6swVcNDHFq-psXAwhuZzi1YcDROnZ5YWPwRCkseI85hGLc_7_aTjWw8gXXgWuiO6oBw/exec?action=checkNumber"; // check number endpoint (add ?action=checkNumber&cricheroz=XXXXXXXXXX)
 
-// Generate unique ID function
 function generateUniqueID() {
   return 'RN2025' + Date.now().toString().slice(-6) + Math.floor(100 + Math.random() * 900);
 }
@@ -418,6 +428,18 @@ checkFileInputSize('profile', 'profile-error');
 checkFileInputSize('aadhaar', 'aadhaar-error');
 checkFileInputSize('paymentss', 'paymentss-error');
 
+// Cricheroz minimum 10 digit validation live
+document.getElementById('cricheroz').addEventListener('input', function() {
+  const val = this.value.trim();
+  if (val.length < 10) {
+    document.getElementById('cricheroz-error').style.display = 'inline';
+  } else {
+    document.getElementById('cricheroz-error').style.display = 'none';
+  }
+  // Hide duplicate error on input change
+  document.getElementById('cricheroz-duplicate').style.display = 'none';
+});
+
 document.getElementById('registrationForm').addEventListener('submit', async function(e) {
   e.preventDefault();
 
@@ -425,6 +447,44 @@ document.getElementById('registrationForm').addEventListener('submit', async fun
   const submitBtn = document.querySelector('.btn-submit');
   submitBtn.disabled = true;
   submitBtn.style.opacity = "0.6";
+
+  // Cricheroz validation before anything
+  const cricherozInput = document.getElementById('cricheroz');
+  const cricherozVal = cricherozInput.value.trim();
+  if (cricherozVal.length < 10) {
+    document.getElementById('cricheroz-error').style.display = 'inline';
+    submitBtn.disabled = false;
+    submitBtn.style.opacity = "1";
+    return;
+  } else {
+    document.getElementById('cricheroz-error').style.display = 'none';
+  }
+
+  // Duplicate check API call
+  try {
+    let checkUrl = checkNumberApi + "&cricheroz=" + encodeURIComponent(cricherozVal);
+    let checkResp = await fetch(checkUrl, {method: "GET"});
+    let checkText = await checkResp.text();
+    if (checkText && checkText.toLowerCase().includes("exists")) {
+      document.getElementById('cricheroz-duplicate').style.display = 'inline';
+      submitBtn.disabled = false;
+      submitBtn.style.opacity = "1";
+      return;
+    }
+  } catch (err) {
+    Swal.fire({
+      title: 'Error!',
+      text: 'Could not check mobile number. Try again.',
+      icon: 'error',
+      confirmButtonColor: '#e63946',
+      background: 'linear-gradient(120deg, #f6f8fa 0%, #eaf1fb 100%)',
+      color: '#23406b',
+      iconColor: '#e63946'
+    });
+    submitBtn.disabled = false;
+    submitBtn.style.opacity = "1";
+    return;
+  }
 
   // Show SweetAlert2 loading popup
   Swal.fire({
@@ -450,7 +510,7 @@ document.getElementById('registrationForm').addEventListener('submit', async fun
   // Sare field values le lo
   const fname = document.getElementById('fname').value;
   const lname = document.getElementById('lname').value;
-  const cricheroz = document.getElementById('cricheroz').value;
+  // cricheroz already le liya upar
   const village = document.getElementById('village').value;
   const taluka = document.getElementById('taluka').value;
   const role = document.getElementById('role').value;
@@ -499,7 +559,7 @@ document.getElementById('registrationForm').addEventListener('submit', async fun
   payload.append('uniqueID', uniqueID);
   payload.append('fname', fname);
   payload.append('lname', lname);
-  payload.append('cricheroz', cricheroz);
+  payload.append('cricheroz', cricherozVal);
   payload.append('village', village);
   payload.append('taluka', taluka);
   payload.append('role', role);
@@ -533,10 +593,11 @@ document.getElementById('registrationForm').addEventListener('submit', async fun
     document.getElementById('registrationForm').reset();
     submitBtn.disabled = false;
     submitBtn.style.opacity = "1";
-    // Hide error messages after reset
     document.getElementById('profile-error').style.display = 'none';
     document.getElementById('aadhaar-error').style.display = 'none';
     document.getElementById('paymentss-error').style.display = 'none';
+    document.getElementById('cricheroz-error').style.display = 'none';
+    document.getElementById('cricheroz-duplicate').style.display = 'none';
   })
   .catch(err => {
     Swal.close();
