@@ -262,7 +262,6 @@
         <input type="text" id="cricheroz" name="cricheroz" placeholder="Enter Cricheroes Number" required>
       </div>
       <small id="cricheroz-error" class="field-error">Minimum 10 digits required.</small>
-      <!-- Duplicate logic error removed as per request -->
 
       <label for="village">Village <span class="required">*</span></label>
       <div class="icon-input-group">
@@ -476,7 +475,6 @@ document.getElementById('registrationForm').addEventListener('submit', async fun
   const taluka = document.getElementById('taluka').value;
   const role = document.getElementById('role').value;
   const size = document.getElementById('size').value;
-  const tshirtname = document.getElementById('tshirtname') ? document.getElementById('tshirtname').value : '';
   const tshirtno = document.getElementById('tshirtno').value;
 
   // Files ko base64 me convert karo
@@ -525,7 +523,6 @@ document.getElementById('registrationForm').addEventListener('submit', async fun
   payload.append('taluka', taluka);
   payload.append('role', role);
   payload.append('size', size);
-  payload.append('tshirtname', tshirtname);
   payload.append('tshirtno', tshirtno);
   payload.append('profile', profileBase64);
   payload.append('aadhaar', aadhaarBase64);
