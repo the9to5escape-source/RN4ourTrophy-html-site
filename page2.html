@@ -53,8 +53,6 @@
       color: #23406b;
       letter-spacing: 0.1px;
     }
-
-    /* Icon Input Group for left icon */
     .icon-input-group {
       display: flex;
       align-items: center;
@@ -69,10 +67,9 @@
       border: 1.5px solid #3f51b5;
       background: #f8fbff;
     }
-    /* Icon style (no extra background now) */
     .icon-input-group i {
       color: #3f51b5;
-      font-size: 1em; /* icon size thoda kam */
+      font-size: 1em;
       vertical-align: middle;
       margin-right: 9px;
       min-width: 22px;
@@ -223,7 +220,6 @@
       font-size: 0.98em;
       margin-bottom: 6px;
     }
-    /* Error message style for file size */
     .file-error {
       color: #e63946;
       font-size: 0.93em;
@@ -231,7 +227,6 @@
       margin-bottom: 8px;
       display: none;
     }
-    /* Error for cricheroz field */
     .field-error {
       color: #e63946;
       font-size: 0.93em;
@@ -243,7 +238,6 @@
 </head>
 <body>
   <div class="container">
-    <!-- Personal Info -->
     <form id="registrationForm">
     <div class="section">
       <div class="section-title">
@@ -268,7 +262,7 @@
         <input type="text" id="cricheroz" name="cricheroz" placeholder="Enter Cricheroes Number" required>
       </div>
       <small id="cricheroz-error" class="field-error">Minimum 10 digits required.</small>
-      <small id="cricheroz-duplicate" class="field-error">Number already registered, please use another number.</small>
+      <!-- Duplicate logic error removed as per request -->
 
       <label for="village">Village <span class="required">*</span></label>
       <div class="icon-input-group">
@@ -299,7 +293,6 @@
       <div class="info">Upload a clear image of your Aadhar card</div>
     </div>
 
-    <!-- Player Role -->
     <div class="section">
       <div class="section-title">
         <i class="fa-solid fa-user-tag" style="color:#fff"></i>
@@ -318,7 +311,6 @@
       </div>
     </div>
 
-    <!-- Clothing Info -->
     <div class="section">
       <div class="section-title">
         <i class="fa-solid fa-shirt" style="color:#fff"></i>
@@ -345,7 +337,6 @@
       </div>
     </div>
 
-    <!-- QR Payment -->
     <div class="section">
       <div class="section-title">
         <i class="fa-solid fa-qrcode" style="color:#fff"></i>
@@ -374,7 +365,6 @@
       </div>
     </div>
     </form>
-    <!-- Footer -->
     <div class="footer">
       <div>Follow us on:</div>
       <div class="social-icons">
@@ -402,8 +392,7 @@
     </div>
   </div>
   <script>
-const webAppUrl = "https://script.google.com/macros/s/AKfycbw6swVcNDHFq-psXAwhuZzi1YcDROnZ5YWPwRCkseI85hGLc_7_aTjWw8gXXgWuiO6oBw/exec"; // Apna Web App URL
-const checkNumberApi = "https://script.google.com/macros/s/AKfycbw6swVcNDHFq-psXAwhuZzi1YcDROnZ5YWPwRCkseI85hGLc_7_aTjWw8gXXgWuiO6oBw/exec?action=checkNumber"; // check number endpoint (add ?action=checkNumber&cricheroz=XXXXXXXXXX)
+const webAppUrl = "https://script.google.com/macros/s/AKfycbw6swVcNDHFq-psXAwhuZzi1YcDROnZ5YWPwRCkseI85hGLc_7_aTjWw8gXXgWuiO6oBw/exec";
 
 function generateUniqueID() {
   return 'RN2025' + Date.now().toString().slice(-6) + Math.floor(100 + Math.random() * 900);
@@ -436,8 +425,6 @@ document.getElementById('cricheroz').addEventListener('input', function() {
   } else {
     document.getElementById('cricheroz-error').style.display = 'none';
   }
-  // Hide duplicate error on input change
-  document.getElementById('cricheroz-duplicate').style.display = 'none';
 });
 
 document.getElementById('registrationForm').addEventListener('submit', async function(e) {
@@ -458,32 +445,6 @@ document.getElementById('registrationForm').addEventListener('submit', async fun
     return;
   } else {
     document.getElementById('cricheroz-error').style.display = 'none';
-  }
-
-  // Duplicate check API call
-  try {
-    let checkUrl = checkNumberApi + "&cricheroz=" + encodeURIComponent(cricherozVal);
-    let checkResp = await fetch(checkUrl, {method: "GET"});
-    let checkText = await checkResp.text();
-    if (checkText && checkText.toLowerCase().includes("exists")) {
-      document.getElementById('cricheroz-duplicate').style.display = 'inline';
-      submitBtn.disabled = false;
-      submitBtn.style.opacity = "1";
-      return;
-    }
-  } catch (err) {
-    Swal.fire({
-      title: 'Error!',
-      text: 'Could not check mobile number. Try again.',
-      icon: 'error',
-      confirmButtonColor: '#e63946',
-      background: 'linear-gradient(120deg, #f6f8fa 0%, #eaf1fb 100%)',
-      color: '#23406b',
-      iconColor: '#e63946'
-    });
-    submitBtn.disabled = false;
-    submitBtn.style.opacity = "1";
-    return;
   }
 
   // Show SweetAlert2 loading popup
@@ -597,7 +558,6 @@ document.getElementById('registrationForm').addEventListener('submit', async fun
     document.getElementById('aadhaar-error').style.display = 'none';
     document.getElementById('paymentss-error').style.display = 'none';
     document.getElementById('cricheroz-error').style.display = 'none';
-    document.getElementById('cricheroz-duplicate').style.display = 'none';
   })
   .catch(err => {
     Swal.close();
